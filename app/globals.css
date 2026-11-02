@@ -2,25 +2,27 @@
 
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
+/* ---------- Colours: warm paper and cocoa ---------- */
+
 :root {
-  --background: #f7f6f2;
-  --foreground: #18181b;
-  --muted: #52525b;
-  --faint: #8a8a93;
-  --line: #e4e2db;
-  --surface-card: #ffffff;
-  --surface-sunken: #f0eee8;
+  --background: #fbf5ec;
+  --foreground: #3a2a1e;
+  --muted: #6f5a48;
+  --faint: #a08a74;
+  --line: #eadcc6;
+  --surface-card: #fffaf3;
+  --surface-sunken: #f4ead9;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0e0e10;
-    --foreground: #ededef;
-    --muted: #a1a1aa;
-    --faint: #71717a;
-    --line: #27272a;
-    --surface-card: #161619;
-    --surface-sunken: #1f1f23;
+    --background: #1b1512;
+    --foreground: #f5e9da;
+    --muted: #c9b49d;
+    --faint: #8f7a66;
+    --line: #3b2f26;
+    --surface-card: #241c17;
+    --surface-sunken: #2e241d;
   }
 }
 
@@ -32,11 +34,204 @@
   --color-line: var(--line);
   --color-surface-card: var(--surface-card);
   --color-surface-sunken: var(--surface-sunken);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.font-display {
+  font-variation-settings: "SOFT" 100, "WONK" 0;
+}
+
+::selection {
+  background: #f6c99b;
+  color: #3a2a1e;
+}
+
+/* ---------- Decoration ---------- */
+
+/* The stage behind each screenshot or mockup: a soft tint of the project's accent with dots. */
+.stage {
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--accent) 35%, transparent) 1px, transparent 0) 0 0 / 18px 18px,
+    linear-gradient(145deg, color-mix(in oklab, var(--accent) 26%, var(--surface-sunken)), color-mix(in oklab, var(--accent) 10%, var(--surface-card)));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 25%, transparent);
+}
+
+.squiggle-line {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12'%3E%3Cpath d='M0 6 Q6 0 12 6 T24 6' fill='none' stroke='%23d9c6aa' stroke-width='2'/%3E%3C/svg%3E")
+    repeat-x center / 24px 12px;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.45;
+  animation: blob-float 18s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .blob {
+    opacity: 0.12;
+  }
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes blob-float {
+  0%, 100% { translate: 0 0; scale: 1; }
+  33% { translate: 40px -30px; scale: 1.08; }
+  66% { translate: -30px 25px; scale: 0.95; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; translate: 0 18px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes wave {
+  0%, 60%, 100% { rotate: 0deg; }
+  10%, 30% { rotate: 16deg; }
+  20% { rotate: -8deg; }
+  40% { rotate: -4deg; }
+  50% { rotate: 10deg; }
+}
+
+@keyframes bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 260; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes wiggle {
+  0%, 100% { rotate: 0deg; }
+  25% { rotate: -8deg; }
+  75% { rotate: 8deg; }
+}
+
+@keyframes shot-in {
+  from { opacity: 0; scale: 0.96; }
+  to { opacity: 1; scale: 1; }
+}
+
+.fade-up { animation: fade-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.wave { transform-origin: 70% 70%; animation: wave 2.6s ease-in-out 0.6s infinite; }
+.bob { animation: bob 4s ease-in-out infinite; }
+.draw-underline path { stroke-dasharray: 260; animation: draw 1s ease-out 0.5s both; }
+.wiggle-on-hover:hover { animation: wiggle 0.4s ease-in-out; }
+.stage-shot { animation: shot-in 0.35s ease-out both; }
+
+.bouncy { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, color 0.2s, border-color 0.2s; }
+.bouncy:hover { transform: translateY(-2px) scale(1.03); }
+.bouncy:active { transform: scale(0.95); }
+
+.tilt > figure > div { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.tilt:hover > figure > div { transform: rotate(-1deg) scale(1.015); }
+
+/* Reveal on scroll, without JavaScript. Browsers without scroll-driven animations just show the content. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: fade-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+/* ---------- Mockup animations ---------- */
+
+/* Windmill: the window snaps left half -> top-right quarter -> full screen. */
+@keyframes windmill-window {
+  0%, 22% { left: 2%; top: 3%; width: 47.5%; height: 87%; }
+  33%, 55% { left: 50.5%; top: 3%; width: 47.5%; height: 42.5%; }
+  66%, 88% { left: 2%; top: 3%; width: 96%; height: 87%; }
+  100% { left: 2%; top: 3%; width: 47.5%; height: 87%; }
+}
+@keyframes windmill-ring {
+  0%, 22%, 33%, 55%, 66%, 88%, 100% { opacity: 0; scale: 0.7; }
+  25%, 31%, 58%, 64%, 91%, 97% { opacity: 1; scale: 1; }
+}
+@keyframes windmill-aim {
+  0%, 24% { translate: -50% -50%; }
+  28%, 33% { translate: 70% -170%; }
+  34%, 57% { translate: -50% -50%; }
+  61%, 66% { translate: -50% -190%; }
+  67%, 90% { translate: -50% -50%; }
+  94%, 100% { translate: -190% -50%; }
+}
+.mock-windmill-window { left: 2%; top: 3%; width: 47.5%; height: 87%; animation: windmill-window 9s ease-in-out infinite; }
+.mock-windmill-ring { animation: windmill-ring 9s ease-in-out infinite; }
+.mock-windmill-aim { translate: -50% -50%; transform: none; animation: windmill-aim 9s ease-in-out infinite; }
+
+/* Tele-Task-Monitor: bars breathe, the wave scrolls, the number blinks. */
+@keyframes tele-bar { from { scale: 1 0.35; } to { scale: 1 1; } }
+@keyframes tele-wave { to { translate: -50% 0; } }
+@keyframes blink { 50% { opacity: 0.45; } }
+.mock-tele-bar { transform-origin: bottom; animation: tele-bar 1.4s ease-in-out infinite alternate; }
+.mock-tele-wave { animation: tele-wave 4s linear infinite; }
+.mock-blink { animation: blink 1s steps(2) infinite; }
+
+/* Quaestio: a card is picked up and moved across the board. */
+@keyframes quaestio-card {
+  0%, 18% { left: 2%; scale: 1; rotate: 0deg; opacity: 1; }
+  24% { scale: 1.08; rotate: -3deg; }
+  36%, 52% { left: 35.5%; scale: 1; rotate: 0deg; }
+  58% { scale: 1.08; rotate: 3deg; }
+  70%, 88% { left: 69%; scale: 1; rotate: 0deg; opacity: 1; }
+  95% { left: 69%; opacity: 0; }
+  96% { left: 2%; opacity: 0; }
+  100% { left: 2%; opacity: 1; }
+}
+.mock-quaestio-card { left: 35.5%; animation: quaestio-card 8s ease-in-out infinite; }
+
+/* Attributor: the Events fold opens and closes, the button gets clicked. */
+@keyframes attr-fold { 0%, 30% { max-height: 0; opacity: 0; margin-top: 0; } 40%, 80% { max-height: 40px; opacity: 1; margin-top: 4px; } 90%, 100% { max-height: 0; opacity: 0; margin-top: 0; } }
+@keyframes attr-caret { 0%, 30% { rotate: 0deg; } 40%, 80% { rotate: 90deg; } 90%, 100% { rotate: 0deg; } }
+@keyframes attr-button { 0%, 55%, 65%, 100% { scale: 1; background: #585858; } 60% { scale: 0.9; background: #a77bd6; } }
+.mock-attr-fold { animation: attr-fold 6s ease-in-out infinite; }
+.mock-attr-caret { animation: attr-caret 6s ease-in-out infinite; }
+.mock-attr-button { animation: attr-button 6s ease-in-out infinite; }
+
+/* Magic Trackpad: two fingers slide, the cube orbits. */
+@keyframes trackpad-cube { from { transform: rotateX(-18deg) rotateY(0deg); } to { transform: rotateX(-18deg) rotateY(360deg); } }
+@keyframes trackpad-fingers { 0%, 100% { translate: -90% -50%; } 50% { translate: -10% -50%; } }
+.mock-trackpad-cube { animation: trackpad-cube 8s linear infinite; }
+.mock-trackpad-fingers { transform: none; animation: trackpad-fingers 2s ease-in-out infinite; }
+
+/* CookIEs: a bank notification arrives and becomes a captured transaction. */
+@keyframes cookies-notif { 0%, 8% { translate: 0 -130%; opacity: 0; } 16%, 38% { translate: 0 0; opacity: 1; } 46%, 100% { translate: 0 -130%; opacity: 0; } }
+@keyframes cookies-new { 0%, 40% { max-height: 0; opacity: 0; } 50%, 90% { max-height: 30px; opacity: 1; } 100% { max-height: 0; opacity: 0; } }
+.mock-cookies-notif { animation: cookies-notif 6s ease-in-out infinite; }
+.mock-cookies-new { animation: cookies-new 6s ease-in-out infinite; }
+
+/* ToDo Stack: the top card is swiped away and joins the back of the stack. */
+@keyframes todo-card {
+  0%, 22% { translate: 0 0; scale: 1; rotate: 0deg; opacity: 1; z-index: 3; }
+  31% { translate: 130% -4px; rotate: 16deg; opacity: 0; z-index: 4; }
+  34% { translate: 0 -26px; scale: 0.86; rotate: 0deg; opacity: 0; z-index: 1; }
+  42%, 58% { translate: 0 -26px; scale: 0.86; opacity: 1; z-index: 1; }
+  66%, 89% { translate: 0 -13px; scale: 0.93; opacity: 1; z-index: 2; }
+  100% { translate: 0 0; scale: 1; opacity: 1; z-index: 3; }
+}
+.mock-todo-card { transform-origin: top center; animation: todo-card 6s ease-in-out infinite; }
+
+/* ---------- Respect reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { animation: none !important; }
 }

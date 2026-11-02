@@ -1,7 +1,7 @@
-# app-pages
+# works
 
 The project showcase for [Kataruna](https://github.com/Kataruna), published at
-**https://kataruna.github.io/app-pages/**.
+**https://kataruna.github.io/works/**.
 
 Built with Next.js 16 (App Router) as a static export and deployed to GitHub Pages by
 `.github/workflows/nextjs.yml` on every push to `main`.
@@ -25,7 +25,7 @@ yarn build      # writes the static site to out/
 ## How the GitHub Pages build works
 
 `next.config.ts` sets `output: "export"`, `trailingSlash: true` and `images.unoptimized: true`
-(Pages has no server). When `GITHUB_ACTIONS=true` it also sets `basePath: "/app-pages"`, because
+(Pages has no server). When `GITHUB_ACTIONS=true` it sets `basePath` to `/<repository name>` (read from `GITHUB_REPOSITORY`), because
 the site is served from a sub-path. `next/image` does not add `basePath` to `src` on its own, so
 components prefix image paths with `NEXT_PUBLIC_BASE_PATH`.
 

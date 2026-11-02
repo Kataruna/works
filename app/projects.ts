@@ -2,12 +2,13 @@ export type Platform = "Windows" | "macOS" | "Android" | "Unity" | "Web";
 
 export type Category = "Desktop tools" | "Unity editor packages" | "Android apps";
 
-/** Device chrome drawn around a mockup. Real screenshots are shown without it. */
+/** Device chrome drawn around a project's animated illustration. */
 export type Frame = "desktop" | "mac" | "tablet" | "unity" | "phone";
 
-/** Which animated placeholder to draw until real screenshots exist. */
+/** Which animated illustration to draw. */
 export type MockKind =
   | "windmill"
+  | "lemon"
   | "tele"
   | "quaestio"
   | "attributor"
@@ -15,25 +16,11 @@ export type MockKind =
   | "cookies"
   | "todo";
 
-export type Screenshot = {
-  /** Path under /public, e.g. "/windmill-ring.webp". */
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  caption?: string;
-};
-
 export type Showcase = {
   frame: Frame;
-  /** Placeholder shown while there are no screenshots. */
-  mock?: MockKind;
-  /**
-   * Add real screenshots here. When this list has entries, they replace the
-   * mockup. Several screenshots get small tabs to switch between them.
-   */
-  screenshots?: Screenshot[];
-};
+  /** The animated illustration drawn inside the frame (see app/showcase/Mocks.tsx). */
+  mock: MockKind;
+}
 
 export type Project = {
   slug: string;
@@ -105,25 +92,7 @@ export const projects: Project[] = [
     logo: "/lemon.png",
     accent: "#f2b632",
     status: "Released · Homebrew cask",
-    showcase: {
-      frame: "mac",
-      screenshots: [
-        {
-          src: "/lemon-wheel.webp",
-          alt: "The conversion wheel open over a Finder window, with a photo resting on JPG",
-          width: 1370,
-          height: 1040,
-          caption: "The wheel",
-        },
-        {
-          src: "/lemon-window.webp",
-          alt: "Lemon's batch queue with six files, each set to an output format",
-          width: 1440,
-          height: 940,
-          caption: "Batch queue",
-        },
-      ],
-    },
+    showcase: { frame: "mac", mock: "lemon" },
     links: [
       { label: "Repository", href: gh("Lemon") },
       { label: "Releases", href: `${gh("Lemon")}/releases` },

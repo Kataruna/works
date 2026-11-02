@@ -2,6 +2,39 @@ export type Platform = "Windows" | "macOS" | "Android" | "Unity" | "Web";
 
 export type Category = "Desktop tools" | "Unity editor packages" | "Android apps";
 
+/** Device chrome drawn around a mockup. Real screenshots are shown without it. */
+export type Frame = "desktop" | "mac" | "tablet" | "unity" | "phone";
+
+/** Which animated placeholder to draw until real screenshots exist. */
+export type MockKind =
+  | "windmill"
+  | "tele"
+  | "quaestio"
+  | "attributor"
+  | "trackpad"
+  | "cookies"
+  | "todo";
+
+export type Screenshot = {
+  /** Path under /public, e.g. "/windmill-ring.webp". */
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+};
+
+export type Showcase = {
+  frame: Frame;
+  /** Placeholder shown while there are no screenshots. */
+  mock?: MockKind;
+  /**
+   * Add real screenshots here. When this list has entries, they replace the
+   * mockup. Several screenshots get small tabs to switch between them.
+   */
+  screenshots?: Screenshot[];
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -13,12 +46,15 @@ export type Project = {
   highlights: string[];
   /** Path under /public, or null to show a monogram instead. */
   logo: string | null;
+  /** True when the logo is a full app icon that fills its tile (no padding). */
+  logoFullBleed?: boolean;
   /** Optional logo used in dark mode. */
   logoDark?: string;
   /** Accent used for the monogram and card trim. */
   accent: string;
   status: string;
   links: { label: string; href: string }[];
+  showcase: Showcase;
   /** Private repos are described but not linked. */
   isPrivate?: boolean;
 };
@@ -43,8 +79,9 @@ export const projects: Project[] = [
     ],
     logo: "/windmill.svg",
     logoDark: "/windmill-white.svg",
-    accent: "#3b82f6",
+    accent: "#5b9bd5",
     status: "Released",
+    showcase: { frame: "desktop", mock: "windmill" },
     links: [
       { label: "Repository", href: gh("Windmill") },
       { label: "Releases", href: `${gh("Windmill")}/releases` },
@@ -66,8 +103,27 @@ export const projects: Project[] = [
       "Batch queue with per-file presets and live progress",
     ],
     logo: "/lemon.png",
-    accent: "#eab308",
+    accent: "#f2b632",
     status: "Released · Homebrew cask",
+    showcase: {
+      frame: "mac",
+      screenshots: [
+        {
+          src: "/lemon-wheel.webp",
+          alt: "The conversion wheel open over a Finder window, with a photo resting on JPG",
+          width: 1370,
+          height: 1040,
+          caption: "The wheel",
+        },
+        {
+          src: "/lemon-window.webp",
+          alt: "Lemon's batch queue with six files, each set to an output format",
+          width: 1440,
+          height: 940,
+          caption: "Batch queue",
+        },
+      ],
+    },
     links: [
       { label: "Repository", href: gh("Lemon") },
       { label: "Releases", href: `${gh("Lemon")}/releases` },
@@ -89,8 +145,9 @@ export const projects: Project[] = [
       "Install the dashboard on an iPad as a full-screen web app",
     ],
     logo: null,
-    accent: "#10b981",
+    accent: "#3fae8c",
     status: "Active",
+    showcase: { frame: "tablet", mock: "tele" },
     links: [{ label: "Repository", href: gh("Tele-Task-Monitor") }],
   },
   {
@@ -109,8 +166,9 @@ export const projects: Project[] = [
       "Light/dark themes, custom palettes and grouped repo tabs",
     ],
     logo: "/quaestio.svg",
-    accent: "#84cc16",
+    accent: "#8bb83a",
     status: "v1.0",
+    showcase: { frame: "mac", mock: "quaestio" },
     links: [
       { label: "Repository", href: gh("Quaestio") },
       { label: "Releases", href: `${gh("Quaestio")}/releases` },
@@ -132,8 +190,9 @@ export const projects: Project[] = [
       "Install straight from the git URL in Package Manager",
     ],
     logo: null,
-    accent: "#a855f7",
+    accent: "#a77bd6",
     status: "v0.7",
+    showcase: { frame: "unity", mock: "attributor" },
     links: [
       { label: "Repository", href: gh("Sarabunari-Attributor") },
       { label: "Manual", href: "https://kataruna.github.io/Sarabunari-Attributor/" },
@@ -155,8 +214,9 @@ export const projects: Project[] = [
       "Mice and other panels are left exactly as Unity has them",
     ],
     logo: null,
-    accent: "#f43f5e",
+    accent: "#e5677d",
     status: "v0.2",
+    showcase: { frame: "unity", mock: "trackpad" },
     links: [{ label: "Repository", href: gh("Sarabunari-MagicTrackpad") }],
   },
   {
@@ -174,9 +234,11 @@ export const projects: Project[] = [
       "Pockets, budgets, insights, groceries and feast splitting",
       "CSV import/export, full backups and a biometric app lock",
     ],
-    logo: null,
-    accent: "#c2410c",
+    logo: "/cookies.png",
+    logoFullBleed: true,
+    accent: "#ee9a63",
     status: "Beta",
+    showcase: { frame: "phone", mock: "cookies" },
     links: [],
     isPrivate: true,
   },
@@ -195,9 +257,11 @@ export const projects: Project[] = [
       "Accent themes, custom fonts and persistent category colors",
       "Adaptive list-detail layout for large screens",
     ],
-    logo: null,
-    accent: "#0ea5e9",
+    logo: "/todo-stack.png",
+    logoFullBleed: true,
+    accent: "#c08a4a",
     status: "In development",
+    showcase: { frame: "phone", mock: "todo" },
     links: [],
     isPrivate: true,
   },
@@ -208,5 +272,19 @@ export const categories: Category[] = [
   "Unity editor packages",
   "Android apps",
 ];
+
+export const categoryEmoji: Record<Category, string> = {
+  "Desktop tools": "🖥️",
+  "Unity editor packages": "🧩",
+  "Android apps": "📱",
+};
+
+export const platformEmoji: Record<Platform, string> = {
+  Windows: "🪟",
+  macOS: "🍎",
+  Android: "🤖",
+  Unity: "🎮",
+  Web: "🌐",
+};
 
 export const allPlatforms: Platform[] = ["Windows", "macOS", "Android", "Unity", "Web"];

@@ -2,9 +2,9 @@ import type { CSSProperties } from "react";
 import type { MockKind } from "../projects";
 
 /*
- * Animated placeholders that hint at each app's main idea. They are drawn
- * with plain elements and CSS keyframes (see globals.css, "mock-" prefix),
- * and are replaced by real screenshots once those are added in projects.ts.
+ * Animated illustrations of each app's main idea. They are drawn with plain
+ * elements and CSS keyframes (see globals.css, "mock-" prefix), so they need
+ * no JavaScript and stay sharp at any size.
  */
 
 const d = (seconds: number): CSSProperties => ({ animationDelay: `${seconds}s` });
@@ -38,6 +38,72 @@ function WindmillMock() {
         {[0, 1, 2, 3, 4].map((i) => (
           <span key={i} className="size-2.5 rounded-sm bg-[#6f5a48]/40" />
         ))}
+      </div>
+    </div>
+  );
+}
+
+function FileTile({ name, color, ext }: { name: string; color: string; ext: string }) {
+  return (
+    <div className="flex flex-col items-center gap-0.5">
+      <div className="relative h-8 w-6 rounded-[3px] shadow-sm" style={{ background: color }}>
+        <span className="absolute right-0 top-0 size-2 rounded-bl-[3px] bg-white/60" />
+        <span className="absolute inset-x-0 bottom-1 text-center text-[5px] font-bold text-white">{ext}</span>
+      </div>
+      <span className="text-[7px] text-[#6f5a48]">{name}</span>
+    </div>
+  );
+}
+
+function LemonMock() {
+  // Six formats around the wheel, starting at the top and going clockwise.
+  const formats = ["PNG", "JPG", "WEBP", "PDF", "GIF", "TIFF"];
+  return (
+    <div className="absolute inset-0 bg-[#fbf5ec]">
+      <div className="flex h-[14%] items-center gap-1.5 border-b border-black/5 px-2.5 text-[8px] font-semibold text-[#6f5a48]">
+        <span>‹ ›</span> 📁 Holiday photos
+      </div>
+      {/* files in the folder */}
+      <div className="absolute left-[8%] top-[20%]"><FileTile name="Beach.heic" color="#7fb3d5" ext="HEIC" /></div>
+      <div className="absolute left-[30%] top-[20%]"><FileTile name="Trip.mov" color="#a77bd6" ext="MOV" /></div>
+      <div className="absolute left-[52%] top-[20%]"><FileTile name="Notes.md" color="#8bb83a" ext="MD" /></div>
+      <div className="absolute left-[74%] top-[20%]"><FileTile name="Sunset.heic" color="#ee9a63" ext="HEIC" /></div>
+      {/* the converted copy that appears next to the original */}
+      <div className="mock-lemon-new absolute left-[74%] top-[52%]">
+        <FileTile name="Sunset.jpg" color="#f2b632" ext="JPG" />
+      </div>
+
+      {/* the conversion wheel */}
+      <div className="mock-lemon-wheel absolute left-1/2 top-[62%] aspect-square w-[34%]">
+        <div className="absolute inset-0 rounded-full bg-[#3a2a1e]/90 shadow-xl" />
+        {formats.map((f, i) => {
+          const angle = ((i * 60 - 90) * Math.PI) / 180;
+          return (
+            <span
+              key={f}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-1.5 py-0.5 text-[7px] font-bold text-[#f5e9da] ${f === "JPG" ? "mock-lemon-target" : ""}`}
+              style={{ left: `${50 + 36 * Math.cos(angle)}%`, top: `${50 + 36 * Math.sin(angle)}%` }}
+            >
+              {f}
+            </span>
+          );
+        })}
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base">🍋</span>
+      </div>
+
+      {/* the file being dragged, with the pointer */}
+      <div className="mock-lemon-drag absolute">
+        <div className="relative -translate-x-1/2 -translate-y-1/2 opacity-90">
+          <div className="relative h-8 w-6 rounded-[3px] bg-[#ee9a63] shadow-lg">
+            <span className="absolute right-0 top-0 size-2 rounded-bl-[3px] bg-white/60" />
+          </div>
+          <svg viewBox="0 0 12 16" className="absolute -bottom-2 -right-2 h-3.5 w-3">
+            <path d="M1 1 L1 13 L4 10 L6.5 15 L8.5 14 L6 9 L10.5 9 Z" fill="#fff" stroke="#3a2a1e" strokeWidth="1" />
+          </svg>
+        </div>
+        <span className="mock-lemon-shake absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-1.5 py-0.5 text-[7px] font-bold text-[#3a2a1e] shadow">
+          shake!
+        </span>
       </div>
     </div>
   );
@@ -282,6 +348,8 @@ export function Mock({ kind }: { kind: MockKind }) {
   switch (kind) {
     case "windmill":
       return <WindmillMock />;
+    case "lemon":
+      return <LemonMock />;
     case "tele":
       return <TeleMock />;
     case "quaestio":

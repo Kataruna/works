@@ -13,31 +13,16 @@ description, highlights, tech stack, platforms, status and links. Add, remove or
 Logos go in `public/` and are referenced as `/name.svg`. Entries without a logo show a coloured
 monogram. Set `isPrivate: true` to describe a project without linking its repository.
 
-## Adding screenshots
+## Animated illustrations
 
-Every project has a showcase area. Until it has screenshots, it shows an animated mockup in a
-device frame, labelled "Mockup · screenshot coming soon".
+Each project is shown with a small animated illustration of its main idea, inside a device
+frame. In `app/projects.ts`, `showcase.frame` picks the frame (`desktop`, `mac`, `tablet`,
+`unity` or `phone`) and `showcase.mock` picks the illustration.
 
-1. Put the image in `public/`, e.g. `public/windmill-ring.webp` (WebP or PNG, about 1400 px wide is plenty).
-2. Add it to that project's `showcase.screenshots` in `app/projects.ts`:
-
-   ```ts
-   showcase: {
-     frame: "desktop",
-     mock: "windmill",
-     screenshots: [
-       { src: "/windmill-ring.webp", alt: "The snap ring over a window", width: 1400, height: 900, caption: "Snap ring" },
-     ],
-   },
-   ```
-
-As soon as the list has an entry, the mockup is replaced by the screenshot. With two or more,
-small tabs (using each `caption`) let visitors switch between them. Lemon already uses this.
-`width` and `height` are the image's real pixel size. Phone screenshots work too: they are fitted
-inside the stage.
-
-The mockups live in `app/showcase/Mocks.tsx` and their animations in `app/globals.css`
-(the `mock-` classes). Visitors who turn on "reduce motion" see them still.
+The illustrations are plain HTML elements in `app/showcase/Mocks.tsx`, animated with CSS
+keyframes in `app/globals.css` (the `mock-` classes), so they need no JavaScript. To add one for a
+new project, add a name to `MockKind`, draw it in `Mocks.tsx`, and add its keyframes. Visitors who
+turn on "reduce motion" see them still.
 
 ## Develop
 

@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
-// GitHub Pages serves this project site at https://<user>.github.io/app-pages/
+// GitHub Pages serves a project site at https://<user>.github.io/<repo>/.
+// In Actions, GITHUB_REPOSITORY is "<owner>/<repo>", so the base path follows
+// the repository name automatically (e.g. rename the repo to "works" -> /works).
 const isGithubActions = process.env.GITHUB_ACTIONS === "true";
-const basePath = isGithubActions ? "/app-pages" : "";
+const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "works";
+const basePath = isGithubActions ? `/${repoName}` : "";
 
 const nextConfig: NextConfig = {
   output: "export",

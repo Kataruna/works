@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# app-pages
 
-## Getting Started
+The project showcase for [Kataruna](https://github.com/Kataruna), published at
+**https://kataruna.github.io/app-pages/**.
 
-First, run the development server:
+Built with Next.js 16 (App Router) as a static export and deployed to GitHub Pages by
+`.github/workflows/nextjs.yml` on every push to `main`.
+
+## Editing the projects
+
+All page content lives in [`app/projects.ts`](app/projects.ts). Each entry has a name, tagline,
+description, highlights, tech stack, platforms, status and links. Add, remove or reorder entries there.
+Logos go in `public/` and are referenced as `/name.svg`. Entries without a logo show a coloured
+monogram. Set `isPrivate: true` to describe a project without linking its repository.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
+yarn dev        # http://localhost:3000
+yarn lint
+yarn build      # writes the static site to out/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How the GitHub Pages build works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`next.config.ts` sets `output: "export"`, `trailingSlash: true` and `images.unoptimized: true`
+(Pages has no server). When `GITHUB_ACTIONS=true` it also sets `basePath: "/app-pages"`, because
+the site is served from a sub-path. `next/image` does not add `basePath` to `src` on its own, so
+components prefix image paths with `NEXT_PUBLIC_BASE_PATH`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To reproduce the deployed build locally: `GITHUB_ACTIONS=true yarn build`.
 
-## Learn More
+Static export rules out server features: no Server Actions, dynamic Route Handlers, middleware,
+or dynamic routes without `generateStaticParams`.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In the repository settings, **Pages → Source** must be set to **GitHub Actions**.

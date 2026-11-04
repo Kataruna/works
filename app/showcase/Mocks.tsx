@@ -59,8 +59,8 @@ function FileTile({ name, color, ext }: { name: string; color: string; ext: stri
 
 /**
  * Lemon's wheel: a centre disc with the lemon, a thin empty gap, then an
- * outer ring split into 6 format wedges. A selector wedge pops out past the
- * ring over the format the file is resting on.
+ * outer ring split into 6 format wedges. The wedge being aimed at glows
+ * inside the ring, like the real wheel (mac/Sources/Lemon/Wheel/Wheel.swift).
  */
 function LemonWheel() {
   // Clockwise from the top. Wedge k is centred on -90deg + 60deg * k.
@@ -88,6 +88,12 @@ function LemonWheel() {
   };
   return (
     <svg viewBox="0 0 200 200" className="absolute inset-0 size-full overflow-visible drop-shadow-xl" aria-hidden>
+      <defs>
+        <linearGradient id="lemon-selector" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#ffe36e" />
+          <stop offset="1" stopColor="#f2b632" />
+        </linearGradient>
+      </defs>
       {/* outer ring of formats */}
       <path
         d={`M100 ${100 - ringOuter} A${ringOuter} ${ringOuter} 0 1 1 99.99 ${100 - ringOuter} Z M100 ${100 - ringInner} A${ringInner} ${ringInner} 0 1 0 100.01 ${100 - ringInner} Z`}
@@ -102,9 +108,9 @@ function LemonWheel() {
       })}
       {formats.map((f, k) => label(f, k, "#f5e9da"))}
 
-      {/* selector: pops out past the ring over the chosen format */}
+      {/* selector: the wedge being aimed at glows inside the ring (as in Wheel.swift) */}
       <g className="mock-lemon-target">
-        <path d={wedge(1, ringInner - 2, ringOuter + 10, 2)} fill="#f7d23e" stroke="#fff6cc" strokeWidth="1.5" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 7px #f7d23e)" }} />
+        <path d={wedge(1, ringInner + 4, ringOuter - 4, 1.5)} fill="url(#lemon-selector)" style={{ filter: "drop-shadow(0 0 6px #f7d23e)" }} />
         {label("JPG", 1, "#3a2a1e")}
       </g>
 

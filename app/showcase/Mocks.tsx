@@ -281,29 +281,30 @@ function TodoMock() {
     ["Finish slides", "Study", "#a77bd6"],
     ["Call grandma", "Family", "#ee9a63"],
   ];
+  // Sizes are in em, from a root of 6cqw, so the screen scales with the phone.
   return (
-    <div className="absolute inset-0 bg-[#fff1e0] px-3 pt-7 text-[#3a2a1e]">
-      <div className="text-[11px] font-bold">Today</div>
-      <div className="text-[8px] text-[#a08a74]">3 cards in your stack</div>
-      <div className="relative mt-9 h-[50%]">
+    <div className="absolute inset-0 bg-[#fff1e0] px-[1em] pt-[2.8em] text-[6cqw] text-[#3a2a1e]">
+      <div className="text-[1.5em] font-bold leading-tight">Today</div>
+      <div className="text-[0.75em] text-[#a08a74]">3 cards in your stack</div>
+      <div className="relative mt-[2.6em] h-[50%]">
         {cards.map(([title, tag, color], i) => (
           <div
             key={title}
-            className="mock-todo-card absolute inset-x-1 top-0 flex h-full flex-col rounded-xl bg-white p-2.5 shadow-md ring-1 ring-black/5"
+            className="mock-todo-card absolute inset-x-[0.2em] top-0 flex h-full flex-col rounded-[1em] bg-white p-[1em] shadow-md ring-1 ring-black/5"
             style={{ ...d(i * -2) }}
           >
-            <span className="w-fit rounded-full px-1.5 py-px text-[7px] text-white" style={{ background: color }}>
+            <span className="w-fit rounded-full px-[0.7em] py-[0.15em] text-[0.7em] font-semibold text-white" style={{ background: color }}>
               {tag}
             </span>
-            <span className="mt-1.5 text-[10px] font-bold">{title}</span>
-            <div className="mt-auto space-y-1">
-              <div className="h-1 w-4/5 rounded bg-[#f0e6d6]" />
-              <div className="h-1 w-3/5 rounded bg-[#f0e6d6]" />
+            <span className="mt-[0.5em] text-[1.15em] font-bold">{title}</span>
+            <div className="mt-auto space-y-[0.4em]">
+              <div className="h-[0.4em] w-4/5 rounded bg-[#f0e6d6]" />
+              <div className="h-[0.4em] w-3/5 rounded bg-[#f0e6d6]" />
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-3 text-center text-[7px] text-[#a08a74]">swipe → done</div>
+      <div className="mt-[1.2em] text-center text-[0.75em] text-[#a08a74]">swipe → done</div>
     </div>
   );
 }

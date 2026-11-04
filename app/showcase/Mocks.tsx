@@ -57,9 +57,49 @@ function FileTile({ name, color, ext }: { name: string; color: string; ext: stri
   );
 }
 
+/** Lemon's wheel: a dark ring split into 8 wedges, each one an output format. */
+function LemonWheel() {
+  // Clockwise from the top. Wedge k is centred on -90deg + 45deg * k.
+  const formats = ["PNG", "JPG", "WEBP", "PDF", "AVIF", "ICO", "GIF", "TIFF"];
+  const outer = 96;
+  const inner = 38;
+  const xy = (r: number, deg: number): [number, number] => {
+    const t = (deg * Math.PI) / 180;
+    return [+(100 + r * Math.cos(t)).toFixed(2), +(100 + r * Math.sin(t)).toFixed(2)];
+  };
+  const pt = (r: number, deg: number) => xy(r, deg).join(" ");
+  const wedge = (k: number) => {
+    const a0 = -112.5 + 45 * k;
+    const a1 = a0 + 45;
+    return `M${pt(inner, a0)} L${pt(outer, a0)} A${outer} ${outer} 0 0 1 ${pt(outer, a1)} L${pt(inner, a1)} A${inner} ${inner} 0 0 0 ${pt(inner, a0)} Z`;
+  };
+  return (
+    <svg viewBox="0 0 200 200" className="absolute inset-0 size-full overflow-visible drop-shadow-xl" aria-hidden>
+      <circle cx="100" cy="100" r={outer} fill="#2c2c2e" fillOpacity="0.95" />
+      {/* the wedge the file is resting on lights up */}
+      <path d={wedge(1)} className="mock-lemon-target" fill="#e25a55" style={{ filter: "drop-shadow(0 0 6px #e25a55)" }} />
+      {formats.map((_, k) => {
+        const [x1, y1] = xy(inner, -112.5 + 45 * k);
+        const [x2, y2] = xy(outer, -112.5 + 45 * k);
+        return <line key={k} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#ffffff" strokeOpacity="0.12" strokeWidth="1.2" />;
+      })}
+      {formats.map((f, k) => {
+        const [x, y] = xy(67, -90 + 45 * k);
+        return (
+          <text key={f} x={x} y={y} textAnchor="middle" dominantBaseline="central" fill="#f2f2f2" fontSize="15" fontWeight="700">
+            {f}
+          </text>
+        );
+      })}
+      <circle cx="100" cy="100" r={inner - 3} fill="#3a3a3c" stroke="#1c1c1e" strokeWidth="3" />
+      <text x="100" y="101" textAnchor="middle" dominantBaseline="central" fontSize="30">
+        🍋
+      </text>
+    </svg>
+  );
+}
+
 function LemonMock() {
-  // Six formats around the wheel, starting at the top and going clockwise.
-  const formats = ["PNG", "JPG", "WEBP", "PDF", "GIF", "TIFF"];
   return (
     <div className="absolute inset-0 bg-[#fbf5ec]">
       <div className="flex h-[14%] items-center gap-1.5 border-b border-black/5 px-2.5 text-[8px] font-semibold text-[#6f5a48]">
@@ -75,22 +115,14 @@ function LemonMock() {
         <FileTile name="Sunset.jpg" color="#f2b632" ext="JPG" />
       </div>
 
-      {/* the conversion wheel */}
-      <div className="mock-lemon-wheel absolute left-1/2 top-[62%] aspect-square w-[34%]">
-        <div className="absolute inset-0 rounded-full bg-[#3a2a1e]/90 shadow-xl" />
-        {formats.map((f, i) => {
-          const angle = ((i * 60 - 90) * Math.PI) / 180;
-          return (
-            <span
-              key={f}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-1.5 py-0.5 text-[7px] font-bold text-[#f5e9da] ${f === "JPG" ? "mock-lemon-target" : ""}`}
-              style={{ left: `${50 + 36 * Math.cos(angle)}%`, top: `${50 + 36 * Math.sin(angle)}%` }}
-            >
-              {f}
-            </span>
-          );
-        })}
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base">🍋</span>
+      {/* the conversion wheel: a ring of 8 format wedges around the lemon */}
+      <div className="mock-lemon-wheel absolute left-1/2 top-[60%] aspect-square w-[38%]">
+        <LemonWheel />
+        <div className="absolute left-1/2 top-[101%] flex -translate-x-1/2 items-center gap-[3px] whitespace-nowrap rounded-full bg-[#2c2c2e]/95 p-[3px] text-[7px] font-semibold text-[#d8d8d8] shadow-lg">
+          <span className="rounded-full bg-[#e25a55] px-2 py-0.5 text-white">1 Convert</span>
+          <span className="px-1.5">2 Cut out</span>
+          <span className="px-1.5">3 Resize</span>
+        </div>
       </div>
 
       {/* the file being dragged, with the pointer */}

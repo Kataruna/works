@@ -57,46 +57,60 @@ function FileTile({ name, color, ext }: { name: string; color: string; ext: stri
   );
 }
 
-/** Lemon's wheel: a ring split into 6 wedges, each one an output format. */
+/**
+ * Lemon's wheel: a centre disc with the lemon, a thin empty gap, then an
+ * outer ring split into 6 format wedges. A selector wedge pops out past the
+ * ring over the format the file is resting on.
+ */
 function LemonWheel() {
   // Clockwise from the top. Wedge k is centred on -90deg + 60deg * k.
   const formats = ["PNG", "JPG", "WEBP", "PDF", "GIF", "TIFF"];
-  const outer = 96;
-  const inner = 40;
+  const ringOuter = 96;
+  const ringInner = 56;
+  const centre = 44;
   const xy = (r: number, deg: number): [number, number] => {
     const t = (deg * Math.PI) / 180;
     return [+(100 + r * Math.cos(t)).toFixed(2), +(100 + r * Math.sin(t)).toFixed(2)];
   };
   const pt = (r: number, deg: number) => xy(r, deg).join(" ");
-  const wedge = (k: number) => {
-    const a0 = -120 + 60 * k;
-    const a1 = a0 + 60;
-    return `M${pt(inner, a0)} L${pt(outer, a0)} A${outer} ${outer} 0 0 1 ${pt(outer, a1)} L${pt(inner, a1)} A${inner} ${inner} 0 0 0 ${pt(inner, a0)} Z`;
+  const wedge = (k: number, r0: number, r1: number, inset = 0) => {
+    const a0 = -120 + 60 * k + inset;
+    const a1 = -60 + 60 * k - inset;
+    return `M${pt(r0, a0)} L${pt(r1, a0)} A${r1} ${r1} 0 0 1 ${pt(r1, a1)} L${pt(r0, a1)} A${r0} ${r0} 0 0 0 ${pt(r0, a0)} Z`;
   };
   const label = (f: string, k: number, fill: string) => {
-    const [x, y] = xy(68, -90 + 60 * k);
+    const [x, y] = xy(76, -90 + 60 * k);
     return (
-      <text key={f} x={x} y={y} textAnchor="middle" dominantBaseline="central" fill={fill} fontSize="19" fontWeight="700">
+      <text key={f} x={x} y={y} textAnchor="middle" dominantBaseline="central" fill={fill} fontSize="15" fontWeight="700">
         {f}
       </text>
     );
   };
   return (
     <svg viewBox="0 0 200 200" className="absolute inset-0 size-full overflow-visible drop-shadow-xl" aria-hidden>
-      <circle cx="100" cy="100" r={outer} fill="#3a2a1e" fillOpacity="0.92" />
+      {/* outer ring of formats */}
+      <path
+        d={`M100 ${100 - ringOuter} A${ringOuter} ${ringOuter} 0 1 1 99.99 ${100 - ringOuter} Z M100 ${100 - ringInner} A${ringInner} ${ringInner} 0 1 0 100.01 ${100 - ringInner} Z`}
+        fill="#3a2a1e"
+        fillOpacity="0.94"
+        fillRule="evenodd"
+      />
       {formats.map((_, k) => {
-        const [x1, y1] = xy(inner, -120 + 60 * k);
-        const [x2, y2] = xy(outer, -120 + 60 * k);
+        const [x1, y1] = xy(ringInner, -120 + 60 * k);
+        const [x2, y2] = xy(ringOuter, -120 + 60 * k);
         return <line key={k} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f5e9da" strokeOpacity="0.18" strokeWidth="1.5" />;
       })}
       {formats.map((f, k) => label(f, k, "#f5e9da"))}
-      {/* the wedge the file is resting on lights up lemon yellow */}
+
+      {/* selector: pops out past the ring over the chosen format */}
       <g className="mock-lemon-target">
-        <path d={wedge(1)} fill="#f7d23e" style={{ filter: "drop-shadow(0 0 6px #f7d23e)" }} />
+        <path d={wedge(1, ringInner - 2, ringOuter + 10, 2)} fill="#f7d23e" stroke="#fff6cc" strokeWidth="1.5" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 7px #f7d23e)" }} />
         {label("JPG", 1, "#3a2a1e")}
       </g>
-      <circle cx="100" cy="100" r={inner - 4} fill="#5a4636" />
-      <text x="100" y="102" textAnchor="middle" dominantBaseline="central" fontSize="34">
+
+      {/* centre disc, separated from the ring by a thin gap */}
+      <circle cx="100" cy="100" r={centre} fill="#5a4636" fillOpacity="0.95" />
+      <text x="100" y="102" textAnchor="middle" dominantBaseline="central" fontSize="36">
         🍋
       </text>
     </svg>

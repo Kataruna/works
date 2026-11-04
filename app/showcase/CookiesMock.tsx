@@ -97,13 +97,12 @@ function HomeScreen() {
         <Row cat={food} title="Iced latte" amount="-60" />
         <Row cat={transport} title="Bus" amount="-24" />
         <div className="mt-[0.4em]">
-          <Header total="-฿150">Yesterday</Header>
+          <Header total="-฿105">Yesterday</Header>
         </div>
-        <Row cat={food} title="Pad thai" amount="-45" />
         <Row cat={shopping} title="Groceries" amount="-105" />
       </div>
 
-      <div className="ck-fab absolute right-[0.9em] top-[32.5em] grid size-[2.8em] place-items-center rounded-full bg-[#E25A55] text-white shadow-[0_0.3em_0.8em_rgba(0,0,0,0.25)]">
+      <div className="ck-fab absolute right-[0.9em] top-[26.2em] grid size-[2.8em] place-items-center rounded-full bg-[#E25A55] text-white shadow-[0_0.3em_0.8em_rgba(0,0,0,0.25)]">
         <span className="text-[2em] font-light leading-none">+</span>
       </div>
     </div>
@@ -136,13 +135,13 @@ function AddScreen() {
         </span>
       </div>
 
-      <div className="absolute inset-x-[1em] top-[11em] flex h-[2.6em] items-center rounded-[0.6em] border-[0.06em] border-[#E2DDD6] px-[0.8em]">
+      <div className="absolute inset-x-[1em] top-[9.6em] flex h-[2.6em] items-center rounded-[0.6em] border-[0.06em] border-[#E2DDD6] px-[0.8em]">
         <span className="text-[0.85em]" style={{ color: ink }}>
           Bubble tea
         </span>
       </div>
 
-      <div className="absolute left-[1em] top-[14.3em] flex h-[1.8em] items-center gap-[0.4em] rounded-full pl-[0.25em] pr-[0.8em]" style={{ background: ink }}>
+      <div className="absolute left-[1em] top-[12.8em] flex h-[1.8em] items-center gap-[0.4em] rounded-full pl-[0.25em] pr-[0.8em]" style={{ background: ink }}>
         <span className="grid size-[1.3em] place-items-center rounded-full bg-[#3A2A22]">
           <Icon cat={food} className="size-[0.8em]" />
         </span>
@@ -150,11 +149,11 @@ function AddScreen() {
       </div>
 
       {/* number pad */}
-      <div className="absolute inset-x-[1em] top-[17em] grid grid-cols-3 gap-[0.45em]">
+      <div className="absolute inset-x-[1em] top-[15.3em] grid grid-cols-3 gap-[0.4em]">
         {keys.map((k) => (
           <div
             key={k}
-            className={`grid h-[2.7em] place-items-center rounded-[0.5em] ${k === "4" ? "ck-key4" : k === "5" ? "ck-key5" : ""}`}
+            className={`grid h-[2.3em] place-items-center rounded-[0.5em] ${k === "4" ? "ck-key4" : k === "5" ? "ck-key5" : ""}`}
             style={{ background: chip, color: ink }}
           >
             <span className="ck-mono text-[1.1em]">{k}</span>
@@ -162,7 +161,7 @@ function AddScreen() {
         ))}
       </div>
 
-      <div className="ck-save absolute inset-x-[1em] top-[30.4em] grid h-[2.8em] place-items-center rounded-[0.8em] font-semibold">
+      <div className="ck-save absolute inset-x-[1em] top-[26.3em] grid h-[2.5em] place-items-center rounded-[0.8em] font-semibold">
         Save
       </div>
     </div>

@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { MockKind } from "../projects";
+import { CookiesMock } from "./CookiesMock";
 
 /*
  * Animated illustrations of each app's main idea. They are drawn with plain
@@ -270,43 +271,6 @@ function TrackpadMock() {
         </div>
       </div>
       <div className="absolute left-2 top-2 rounded bg-black/40 px-1.5 py-0.5 text-[8px] text-white">Orbit</div>
-    </div>
-  );
-}
-
-function CookiesMock() {
-  const rows: [string, string, string][] = [
-    ["🚌", "Transport", "-฿45"],
-    ["☕", "Coffee", "-฿85"],
-    ["💼", "Salary", "+฿32,000"],
-  ];
-  return (
-    <div className="absolute inset-0 px-2.5 pt-6 text-[8px] text-[#3a2a1e]">
-      <div className="mock-cookies-notif absolute inset-x-2 top-1 z-10 rounded-lg bg-white p-1.5 shadow-md ring-1 ring-black/5">
-        <div className="font-bold">K-Bank</div>
-        <div className="text-[#6f5a48]">You paid ฿120.00 at Noodle House</div>
-      </div>
-      <div className="text-[8px] text-[#a08a74]">This month</div>
-      <div className="text-lg font-bold leading-tight">฿8,240</div>
-      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#f4ead9]">
-        <div className="h-full w-[42%] rounded-full bg-[#ee9a63]" />
-      </div>
-      <div className="mt-2.5 space-y-1">
-        <div className="mock-cookies-new overflow-hidden">
-          <div className="flex items-center gap-1.5 rounded-md bg-[#fff1e4] p-1 ring-1 ring-[#ee9a63]/60">
-            <span>🍜</span>
-            <span className="flex-1">Food · captured</span>
-            <span className="font-bold">-฿120</span>
-          </div>
-        </div>
-        {rows.map(([icon, name, amount]) => (
-          <div key={name} className="flex items-center gap-1.5 rounded-md bg-[#fbf5ec] p-1">
-            <span>{icon}</span>
-            <span className="flex-1">{name}</span>
-            <span className={amount.startsWith("+") ? "font-bold text-[#3fae8c]" : "font-bold"}>{amount}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

@@ -199,13 +199,17 @@ body {
 .mock-lemon-target { animation: lemon-target 7s ease-in-out infinite; }
 .mock-lemon-new { animation: lemon-new 7s ease-in-out infinite; }
 
-/* Tele-Task-Monitor: bars breathe, the wave scrolls, the number blinks. */
-@keyframes tele-bar { from { scale: 1 0.35; } to { scale: 1 1; } }
-@keyframes tele-wave { to { translate: -50% 0; } }
-@keyframes blink { 50% { opacity: 0.45; } }
-.mock-tele-bar { transform-origin: bottom; animation: tele-bar 1.4s ease-in-out infinite alternate; }
-.mock-tele-wave { animation: tele-wave 4s linear infinite; }
-.mock-blink { animation: blink 1s steps(2) infinite; }
+/* Tele-Task-Monitor: the wave scrolls, the stack segments and load bars breathe. */
+@keyframes tm-wave { to { translate: -50% 0; } }
+@keyframes tm-breathe { from { scale: 0.7 1; } to { scale: 1.2 1; } }
+@keyframes tm-cpu { from { height: 2em; } to { height: 3.4em; } }
+@keyframes tm-ram { from { height: 3.8em; } to { height: 4.8em; } }
+@keyframes tm-gpu { from { height: 1.6em; } to { height: 2.8em; } }
+.tm-wave { animation: tm-wave 6s linear infinite; }
+.tm-stat { transform-origin: left; animation: tm-breathe 2.2s ease-in-out infinite alternate; }
+.tm-seg-cpu { height: 2.6em; animation: tm-cpu 1.9s ease-in-out infinite alternate; }
+.tm-seg-ram { height: 4.2em; animation: tm-ram 3.1s ease-in-out infinite alternate; }
+.tm-seg-gpu { height: 2.2em; animation: tm-gpu 2.5s ease-in-out -1s infinite alternate; }
 
 /* Quaestio: a card is picked up and moved across the board. */
 @keyframes quaestio-card {

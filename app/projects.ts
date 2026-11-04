@@ -114,7 +114,7 @@ export const projects: Project[] = [
       "Install the dashboard on an iPad as a full-screen web app",
     ],
     logo: null,
-    accent: "#3fae8c",
+    accent: "#a89c74",
     status: "Active",
     showcase: { frame: "tablet", mock: "tele" },
     links: [{ label: "Repository", href: gh("Tele-Task-Monitor") }],

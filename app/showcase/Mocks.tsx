@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { MockKind } from "../projects";
 import { CookiesMock } from "./CookiesMock";
+import { TeleMock } from "./TeleMock";
 
 /*
  * Animated illustrations of each app's main idea. They are drawn with plain
@@ -105,58 +106,6 @@ function LemonMock() {
         <span className="mock-lemon-shake absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-1.5 py-0.5 text-[7px] font-bold text-[#3a2a1e] shadow">
           shake!
         </span>
-      </div>
-    </div>
-  );
-}
-
-function TeleMock() {
-  const bars = [0.55, 0.8, 0.35, 0.7, 0.45, 0.9, 0.6, 0.4];
-  return (
-    <div className="absolute inset-0 grid grid-cols-3 grid-rows-[auto_1fr_1fr] gap-2 p-3 font-mono text-[9px] text-[#9fe0c3]">
-      <div className="col-span-3 flex items-center justify-between text-[#5fbf98]">
-        <span>● LIVE · 1 Hz</span>
-        <span>192.168.1.20:7878</span>
-      </div>
-      <div className="col-span-2 flex flex-col rounded-md bg-[#1c2420] p-2">
-        <div className="flex justify-between">
-          <span>CPU</span>
-          <span className="mock-blink">23%</span>
-        </div>
-        <div className="relative mt-1 flex-1 overflow-hidden">
-          <svg className="mock-tele-wave absolute inset-y-0 left-0 h-full w-[200%]" viewBox="0 0 200 40" preserveAspectRatio="none">
-            <path
-              d="M0 22 Q6.25 8 12.5 22 T25 22 T37.5 22 T50 22 T62.5 22 T75 22 T87.5 22 T100 22 T112.5 22 T125 22 T137.5 22 T150 22 T162.5 22 T175 22 T187.5 22 T200 22"
-              vectorEffect="non-scaling-stroke"
-              fill="none"
-              stroke="#3fae8c"
-              strokeWidth="2"
-            />
-          </svg>
-        </div>
-      </div>
-      <div className="flex flex-col rounded-md bg-[#1c2420] p-2">
-        <span>RAM</span>
-        <span className="mt-auto text-lg text-white">11.2</span>
-        <span className="text-[#5fbf98]">of 32 GB</span>
-      </div>
-      <div className="col-span-2 flex items-end gap-1 rounded-md bg-[#1c2420] p-2">
-        {bars.map((h, i) => (
-          <span
-            key={i}
-            className="mock-tele-bar flex-1 rounded-sm bg-[#3fae8c]"
-            style={{ height: `${h * 100}%`, ...d(i * -0.27) }}
-          />
-        ))}
-      </div>
-      <div className="space-y-1 rounded-md bg-[#1c2420] p-2">
-        <span>TOP</span>
-        {["game.exe", "chrome", "obs64"].map((n, i) => (
-          <div key={n} className="flex justify-between text-[8px]">
-            <span className="text-white/80">{n}</span>
-            <span>{[31, 9, 4][i]}%</span>
-          </div>
-        ))}
       </div>
     </div>
   );

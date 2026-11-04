@@ -90,7 +90,7 @@ export const projects: Project[] = [
       "Batch queue with per-file presets and live progress",
     ],
     logo: "/lemon.png",
-    accent: "#f2b632",
+    accent: "#f7d23e",
     status: "Released · Homebrew cask",
     showcase: { frame: "mac", mock: "lemon" },
     links: [

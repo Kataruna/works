@@ -172,8 +172,8 @@ body {
   24% { left: 50%; top: 54%; }
   26% { left: 45%; } 28% { left: 55%; } 30% { left: 45%; } 32% { left: 55%; }
   34% { left: 50%; top: 54%; scale: 1; }
-  46%, 54% { left: 58.9%; top: 48%; scale: 0.8; opacity: 1; }
-  60% { left: 58.9%; top: 48%; scale: 0.2; opacity: 0; }
+  46%, 54% { left: 58.1%; top: 51.2%; scale: 0.8; opacity: 1; }
+  60% { left: 58.1%; top: 51.2%; scale: 0.2; opacity: 0; }
   100% { left: 82%; top: 31%; opacity: 0; }
 }
 @keyframes lemon-shake-label { 0%, 24% { opacity: 0; } 26%, 33% { opacity: 1; } 36%, 100% { opacity: 0; } }

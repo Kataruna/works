@@ -57,42 +57,46 @@ function FileTile({ name, color, ext }: { name: string; color: string; ext: stri
   );
 }
 
-/** Lemon's wheel: a dark ring split into 8 wedges, each one an output format. */
+/** Lemon's wheel: a ring split into 6 wedges, each one an output format. */
 function LemonWheel() {
-  // Clockwise from the top. Wedge k is centred on -90deg + 45deg * k.
-  const formats = ["PNG", "JPG", "WEBP", "PDF", "AVIF", "ICO", "GIF", "TIFF"];
+  // Clockwise from the top. Wedge k is centred on -90deg + 60deg * k.
+  const formats = ["PNG", "JPG", "WEBP", "PDF", "GIF", "TIFF"];
   const outer = 96;
-  const inner = 38;
+  const inner = 40;
   const xy = (r: number, deg: number): [number, number] => {
     const t = (deg * Math.PI) / 180;
     return [+(100 + r * Math.cos(t)).toFixed(2), +(100 + r * Math.sin(t)).toFixed(2)];
   };
   const pt = (r: number, deg: number) => xy(r, deg).join(" ");
   const wedge = (k: number) => {
-    const a0 = -112.5 + 45 * k;
-    const a1 = a0 + 45;
+    const a0 = -120 + 60 * k;
+    const a1 = a0 + 60;
     return `M${pt(inner, a0)} L${pt(outer, a0)} A${outer} ${outer} 0 0 1 ${pt(outer, a1)} L${pt(inner, a1)} A${inner} ${inner} 0 0 0 ${pt(inner, a0)} Z`;
+  };
+  const label = (f: string, k: number, fill: string) => {
+    const [x, y] = xy(68, -90 + 60 * k);
+    return (
+      <text key={f} x={x} y={y} textAnchor="middle" dominantBaseline="central" fill={fill} fontSize="19" fontWeight="700">
+        {f}
+      </text>
+    );
   };
   return (
     <svg viewBox="0 0 200 200" className="absolute inset-0 size-full overflow-visible drop-shadow-xl" aria-hidden>
-      <circle cx="100" cy="100" r={outer} fill="#2c2c2e" fillOpacity="0.95" />
-      {/* the wedge the file is resting on lights up */}
-      <path d={wedge(1)} className="mock-lemon-target" fill="#e25a55" style={{ filter: "drop-shadow(0 0 6px #e25a55)" }} />
+      <circle cx="100" cy="100" r={outer} fill="#3a2a1e" fillOpacity="0.92" />
       {formats.map((_, k) => {
-        const [x1, y1] = xy(inner, -112.5 + 45 * k);
-        const [x2, y2] = xy(outer, -112.5 + 45 * k);
-        return <line key={k} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#ffffff" strokeOpacity="0.12" strokeWidth="1.2" />;
+        const [x1, y1] = xy(inner, -120 + 60 * k);
+        const [x2, y2] = xy(outer, -120 + 60 * k);
+        return <line key={k} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f5e9da" strokeOpacity="0.18" strokeWidth="1.5" />;
       })}
-      {formats.map((f, k) => {
-        const [x, y] = xy(67, -90 + 45 * k);
-        return (
-          <text key={f} x={x} y={y} textAnchor="middle" dominantBaseline="central" fill="#f2f2f2" fontSize="15" fontWeight="700">
-            {f}
-          </text>
-        );
-      })}
-      <circle cx="100" cy="100" r={inner - 3} fill="#3a3a3c" stroke="#1c1c1e" strokeWidth="3" />
-      <text x="100" y="101" textAnchor="middle" dominantBaseline="central" fontSize="30">
+      {formats.map((f, k) => label(f, k, "#f5e9da"))}
+      {/* the wedge the file is resting on lights up lemon yellow */}
+      <g className="mock-lemon-target">
+        <path d={wedge(1)} fill="#f7d23e" style={{ filter: "drop-shadow(0 0 6px #f7d23e)" }} />
+        {label("JPG", 1, "#3a2a1e")}
+      </g>
+      <circle cx="100" cy="100" r={inner - 4} fill="#5a4636" />
+      <text x="100" y="102" textAnchor="middle" dominantBaseline="central" fontSize="34">
         🍋
       </text>
     </svg>
@@ -115,14 +119,9 @@ function LemonMock() {
         <FileTile name="Sunset.jpg" color="#f2b632" ext="JPG" />
       </div>
 
-      {/* the conversion wheel: a ring of 8 format wedges around the lemon */}
-      <div className="mock-lemon-wheel absolute left-1/2 top-[60%] aspect-square w-[38%]">
+      {/* the conversion wheel: a ring of format wedges around the lemon */}
+      <div className="mock-lemon-wheel absolute left-1/2 top-[58%] aspect-square w-[28%]">
         <LemonWheel />
-        <div className="absolute left-1/2 top-[101%] flex -translate-x-1/2 items-center gap-[3px] whitespace-nowrap rounded-full bg-[#2c2c2e]/95 p-[3px] text-[7px] font-semibold text-[#d8d8d8] shadow-lg">
-          <span className="rounded-full bg-[#e25a55] px-2 py-0.5 text-white">1 Convert</span>
-          <span className="px-1.5">2 Cut out</span>
-          <span className="px-1.5">3 Resize</span>
-        </div>
       </div>
 
       {/* the file being dragged, with the pointer */}

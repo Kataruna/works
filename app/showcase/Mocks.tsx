@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { MockKind } from "../projects";
 import { CookiesMock } from "./CookiesMock";
+import { TeleMock } from "./TeleMock";
 
 /*
  * Animated illustrations of each app's main idea. They are drawn with plain
@@ -56,9 +57,73 @@ function FileTile({ name, color, ext }: { name: string; color: string; ext: stri
   );
 }
 
-function LemonMock() {
-  // Six formats around the wheel, starting at the top and going clockwise.
+/**
+ * Lemon's wheel: a centre disc with the lemon, a thin empty gap, then an
+ * outer ring split into 6 format wedges. The wedge being aimed at glows
+ * inside the ring, like the real wheel (mac/Sources/Lemon/Wheel/Wheel.swift).
+ */
+function LemonWheel() {
+  // Clockwise from the top. Wedge k is centred on -90deg + 60deg * k.
   const formats = ["PNG", "JPG", "WEBP", "PDF", "GIF", "TIFF"];
+  const ringOuter = 96;
+  const ringInner = 56;
+  const centre = 44;
+  const xy = (r: number, deg: number): [number, number] => {
+    const t = (deg * Math.PI) / 180;
+    return [+(100 + r * Math.cos(t)).toFixed(2), +(100 + r * Math.sin(t)).toFixed(2)];
+  };
+  const pt = (r: number, deg: number) => xy(r, deg).join(" ");
+  const wedge = (k: number, r0: number, r1: number, inset = 0) => {
+    const a0 = -120 + 60 * k + inset;
+    const a1 = -60 + 60 * k - inset;
+    return `M${pt(r0, a0)} L${pt(r1, a0)} A${r1} ${r1} 0 0 1 ${pt(r1, a1)} L${pt(r0, a1)} A${r0} ${r0} 0 0 0 ${pt(r0, a0)} Z`;
+  };
+  const label = (f: string, k: number, fill: string) => {
+    const [x, y] = xy(76, -90 + 60 * k);
+    return (
+      <text key={f} x={x} y={y} textAnchor="middle" dominantBaseline="central" fill={fill} fontSize="15" fontWeight="700">
+        {f}
+      </text>
+    );
+  };
+  return (
+    <svg viewBox="0 0 200 200" className="absolute inset-0 size-full overflow-visible drop-shadow-xl" aria-hidden>
+      <defs>
+        <linearGradient id="lemon-selector" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#ffe36e" />
+          <stop offset="1" stopColor="#f2b632" />
+        </linearGradient>
+      </defs>
+      {/* outer ring of formats */}
+      <path
+        d={`M100 ${100 - ringOuter} A${ringOuter} ${ringOuter} 0 1 1 99.99 ${100 - ringOuter} Z M100 ${100 - ringInner} A${ringInner} ${ringInner} 0 1 0 100.01 ${100 - ringInner} Z`}
+        fill="#3a2a1e"
+        fillOpacity="0.94"
+        fillRule="evenodd"
+      />
+      {formats.map((_, k) => {
+        const [x1, y1] = xy(ringInner, -120 + 60 * k);
+        const [x2, y2] = xy(ringOuter, -120 + 60 * k);
+        return <line key={k} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f5e9da" strokeOpacity="0.18" strokeWidth="1.5" />;
+      })}
+      {formats.map((f, k) => label(f, k, "#f5e9da"))}
+
+      {/* selector: the wedge being aimed at glows inside the ring (as in Wheel.swift) */}
+      <g className="mock-lemon-target">
+        <path d={wedge(1, ringInner + 4, ringOuter - 4, 1.5)} fill="url(#lemon-selector)" style={{ filter: "drop-shadow(0 0 6px #f7d23e)" }} />
+        {label("JPG", 1, "#3a2a1e")}
+      </g>
+
+      {/* centre disc, separated from the ring by a thin gap */}
+      <circle cx="100" cy="100" r={centre} fill="#5a4636" fillOpacity="0.95" />
+      <text x="100" y="102" textAnchor="middle" dominantBaseline="central" fontSize="36">
+        🍋
+      </text>
+    </svg>
+  );
+}
+
+function LemonMock() {
   return (
     <div className="absolute inset-0 bg-[#fbf5ec]">
       <div className="flex h-[14%] items-center gap-1.5 border-b border-black/5 px-2.5 text-[8px] font-semibold text-[#6f5a48]">
@@ -74,22 +139,9 @@ function LemonMock() {
         <FileTile name="Sunset.jpg" color="#f2b632" ext="JPG" />
       </div>
 
-      {/* the conversion wheel */}
-      <div className="mock-lemon-wheel absolute left-1/2 top-[62%] aspect-square w-[34%]">
-        <div className="absolute inset-0 rounded-full bg-[#3a2a1e]/90 shadow-xl" />
-        {formats.map((f, i) => {
-          const angle = ((i * 60 - 90) * Math.PI) / 180;
-          return (
-            <span
-              key={f}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-1.5 py-0.5 text-[7px] font-bold text-[#f5e9da] ${f === "JPG" ? "mock-lemon-target" : ""}`}
-              style={{ left: `${50 + 36 * Math.cos(angle)}%`, top: `${50 + 36 * Math.sin(angle)}%` }}
-            >
-              {f}
-            </span>
-          );
-        })}
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base">🍋</span>
+      {/* the conversion wheel: a ring of format wedges around the lemon */}
+      <div className="mock-lemon-wheel absolute left-1/2 top-[58%] aspect-square w-[28%]">
+        <LemonWheel />
       </div>
 
       {/* the file being dragged, with the pointer */}
@@ -105,58 +157,6 @@ function LemonMock() {
         <span className="mock-lemon-shake absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-1.5 py-0.5 text-[7px] font-bold text-[#3a2a1e] shadow">
           shake!
         </span>
-      </div>
-    </div>
-  );
-}
-
-function TeleMock() {
-  const bars = [0.55, 0.8, 0.35, 0.7, 0.45, 0.9, 0.6, 0.4];
-  return (
-    <div className="absolute inset-0 grid grid-cols-3 grid-rows-[auto_1fr_1fr] gap-2 p-3 font-mono text-[9px] text-[#9fe0c3]">
-      <div className="col-span-3 flex items-center justify-between text-[#5fbf98]">
-        <span>● LIVE · 1 Hz</span>
-        <span>192.168.1.20:7878</span>
-      </div>
-      <div className="col-span-2 flex flex-col rounded-md bg-[#1c2420] p-2">
-        <div className="flex justify-between">
-          <span>CPU</span>
-          <span className="mock-blink">23%</span>
-        </div>
-        <div className="relative mt-1 flex-1 overflow-hidden">
-          <svg className="mock-tele-wave absolute inset-y-0 left-0 h-full w-[200%]" viewBox="0 0 200 40" preserveAspectRatio="none">
-            <path
-              d="M0 22 Q6.25 8 12.5 22 T25 22 T37.5 22 T50 22 T62.5 22 T75 22 T87.5 22 T100 22 T112.5 22 T125 22 T137.5 22 T150 22 T162.5 22 T175 22 T187.5 22 T200 22"
-              vectorEffect="non-scaling-stroke"
-              fill="none"
-              stroke="#3fae8c"
-              strokeWidth="2"
-            />
-          </svg>
-        </div>
-      </div>
-      <div className="flex flex-col rounded-md bg-[#1c2420] p-2">
-        <span>RAM</span>
-        <span className="mt-auto text-lg text-white">11.2</span>
-        <span className="text-[#5fbf98]">of 32 GB</span>
-      </div>
-      <div className="col-span-2 flex items-end gap-1 rounded-md bg-[#1c2420] p-2">
-        {bars.map((h, i) => (
-          <span
-            key={i}
-            className="mock-tele-bar flex-1 rounded-sm bg-[#3fae8c]"
-            style={{ height: `${h * 100}%`, ...d(i * -0.27) }}
-          />
-        ))}
-      </div>
-      <div className="space-y-1 rounded-md bg-[#1c2420] p-2">
-        <span>TOP</span>
-        {["game.exe", "chrome", "obs64"].map((n, i) => (
-          <div key={n} className="flex justify-between text-[8px]">
-            <span className="text-white/80">{n}</span>
-            <span>{[31, 9, 4][i]}%</span>
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -281,29 +281,30 @@ function TodoMock() {
     ["Finish slides", "Study", "#a77bd6"],
     ["Call grandma", "Family", "#ee9a63"],
   ];
+  // Sizes are in em, from a root of 6cqw, so the screen scales with the phone.
   return (
-    <div className="absolute inset-0 bg-[#fff1e0] px-3 pt-7 text-[#3a2a1e]">
-      <div className="text-[11px] font-bold">Today</div>
-      <div className="text-[8px] text-[#a08a74]">3 cards in your stack</div>
-      <div className="relative mt-9 h-[50%]">
+    <div className="absolute inset-0 bg-[#fff1e0] px-[1em] pt-[2.8em] text-[6cqw] text-[#3a2a1e]">
+      <div className="text-[1.5em] font-bold leading-tight">Today</div>
+      <div className="text-[0.75em] text-[#a08a74]">3 cards in your stack</div>
+      <div className="relative mt-[2.6em] h-[50%]">
         {cards.map(([title, tag, color], i) => (
           <div
             key={title}
-            className="mock-todo-card absolute inset-x-1 top-0 flex h-full flex-col rounded-xl bg-white p-2.5 shadow-md ring-1 ring-black/5"
+            className="mock-todo-card absolute inset-x-[0.2em] top-0 flex h-full flex-col rounded-[1em] bg-white p-[1em] shadow-md ring-1 ring-black/5"
             style={{ ...d(i * -2) }}
           >
-            <span className="w-fit rounded-full px-1.5 py-px text-[7px] text-white" style={{ background: color }}>
+            <span className="w-fit rounded-full px-[0.7em] py-[0.15em] text-[0.7em] font-semibold text-white" style={{ background: color }}>
               {tag}
             </span>
-            <span className="mt-1.5 text-[10px] font-bold">{title}</span>
-            <div className="mt-auto space-y-1">
-              <div className="h-1 w-4/5 rounded bg-[#f0e6d6]" />
-              <div className="h-1 w-3/5 rounded bg-[#f0e6d6]" />
+            <span className="mt-[0.5em] text-[1.15em] font-bold">{title}</span>
+            <div className="mt-auto space-y-[0.4em]">
+              <div className="h-[0.4em] w-4/5 rounded bg-[#f0e6d6]" />
+              <div className="h-[0.4em] w-3/5 rounded bg-[#f0e6d6]" />
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-3 text-center text-[7px] text-[#a08a74]">swipe → done</div>
+      <div className="mt-[1.2em] text-center text-[0.75em] text-[#a08a74]">swipe → done</div>
     </div>
   );
 }

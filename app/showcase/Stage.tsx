@@ -7,9 +7,10 @@ import { Mock } from "./Mocks";
 export function Stage({ project }: { project: Project }) {
   return (
     <figure className="m-0">
+      {/* phones get a taller stage so the screen is big enough to read */}
       <div
         aria-hidden
-        className="stage relative grid aspect-[4/3] place-items-center overflow-hidden rounded-[1.75rem] p-4 sm:p-6"
+        className={`stage relative grid ${project.showcase.frame === "phone" ? "aspect-square" : "aspect-[4/3]"} place-items-center overflow-hidden rounded-[1.75rem] p-4 sm:p-6`}
         style={{ "--accent": project.accent } as CSSProperties}
       >
         <DeviceFrame frame={project.showcase.frame} title={project.name}>

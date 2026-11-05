@@ -90,7 +90,7 @@ export const projects: Project[] = [
       "Batch queue with per-file presets and live progress",
     ],
     logo: "/lemon.png",
-    accent: "#f2b632",
+    accent: "#f7d23e",
     status: "Released · Homebrew cask",
     showcase: { frame: "mac", mock: "lemon" },
     links: [
@@ -114,7 +114,7 @@ export const projects: Project[] = [
       "Install the dashboard on an iPad as a full-screen web app",
     ],
     logo: null,
-    accent: "#3fae8c",
+    accent: "#a89c74",
     status: "Active",
     showcase: { frame: "tablet", mock: "tele" },
     links: [{ label: "Repository", href: gh("Tele-Task-Monitor") }],

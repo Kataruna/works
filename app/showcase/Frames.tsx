@@ -6,7 +6,7 @@ export function DeviceFrame({ frame, title, children }: { frame: Frame; title: s
   switch (frame) {
     case "phone":
       return (
-        <div className="relative mx-auto aspect-[9/20] h-[94%] rounded-[2rem] bg-[#2b211b] p-[7px] shadow-[0_18px_40px_-12px_rgba(60,35,20,0.45)]">
+        <div className="relative mx-auto aspect-[9/16] h-[94%] rounded-[2rem] bg-[#2b211b] p-[7px] shadow-[0_18px_40px_-12px_rgba(60,35,20,0.45)]">
           <div className="@container relative h-full w-full overflow-hidden rounded-[1.6rem] bg-[#fffaf3]">
             <div className="absolute left-1/2 top-1.5 z-20 h-3 w-14 -translate-x-1/2 rounded-full bg-[#2b211b]" />
             {children}
@@ -15,8 +15,8 @@ export function DeviceFrame({ frame, title, children }: { frame: Frame; title: s
       );
     case "tablet":
       return (
-        <div className="relative mx-auto aspect-[4/3] w-[86%] rounded-[1.4rem] bg-[#2b211b] p-2.5 shadow-[0_18px_40px_-12px_rgba(60,35,20,0.45)]">
-          <div className="relative h-full w-full overflow-hidden rounded-[0.9rem] bg-[#121614]">{children}</div>
+        <div className="relative mx-auto aspect-[4/3] w-[94%] rounded-[1.4rem] bg-[#2b211b] p-2.5 shadow-[0_18px_40px_-12px_rgba(60,35,20,0.45)]">
+          <div className="@container relative h-full w-full overflow-hidden rounded-[0.9rem] bg-[#CCC7B1]">{children}</div>
         </div>
       );
     case "unity":

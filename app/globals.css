@@ -172,8 +172,8 @@ body {
   24% { left: 50%; top: 54%; }
   26% { left: 45%; } 28% { left: 55%; } 30% { left: 45%; } 32% { left: 55%; }
   34% { left: 50%; top: 54%; scale: 1; }
-  46%, 54% { left: 60.5%; top: 53%; scale: 0.8; opacity: 1; }
-  60% { left: 60.5%; top: 53%; scale: 0.2; opacity: 0; }
+  46%, 54% { left: 59.1%; top: 50.4%; scale: 0.8; opacity: 1; }
+  60% { left: 59.1%; top: 50.4%; scale: 0.2; opacity: 0; }
   100% { left: 82%; top: 31%; opacity: 0; }
 }
 @keyframes lemon-shake-label { 0%, 24% { opacity: 0; } 26%, 33% { opacity: 1; } 36%, 100% { opacity: 0; } }
@@ -183,9 +183,9 @@ body {
   66%, 100% { opacity: 0; scale: 0.5; }
 }
 @keyframes lemon-target {
-  0%, 44% { background: transparent; color: #f5e9da; scale: 1; }
-  48%, 60% { background: #f2b632; color: #3a2a1e; scale: 1.25; }
-  66%, 100% { background: transparent; color: #f5e9da; scale: 1; }
+  0%, 38% { opacity: 0; }
+  42%, 60% { opacity: 1; }
+  63%, 100% { opacity: 0; }
 }
 @keyframes lemon-new {
   0%, 62% { opacity: 0; scale: 0.4; }
@@ -196,16 +196,20 @@ body {
 .mock-lemon-drag { left: 50%; top: 54%; animation: lemon-drag 7s ease-in-out infinite; }
 .mock-lemon-shake { animation: lemon-shake-label 7s ease-in-out infinite; }
 .mock-lemon-wheel { translate: -50% -50%; animation: lemon-wheel 7s ease-in-out infinite; }
-.mock-lemon-target { animation: lemon-target 7s ease-in-out infinite; }
+.mock-lemon-target { opacity: 0; animation: lemon-target 7s ease-in-out infinite; }
 .mock-lemon-new { animation: lemon-new 7s ease-in-out infinite; }
 
-/* Tele-Task-Monitor: bars breathe, the wave scrolls, the number blinks. */
-@keyframes tele-bar { from { scale: 1 0.35; } to { scale: 1 1; } }
-@keyframes tele-wave { to { translate: -50% 0; } }
-@keyframes blink { 50% { opacity: 0.45; } }
-.mock-tele-bar { transform-origin: bottom; animation: tele-bar 1.4s ease-in-out infinite alternate; }
-.mock-tele-wave { animation: tele-wave 4s linear infinite; }
-.mock-blink { animation: blink 1s steps(2) infinite; }
+/* Tele-Task-Monitor: the wave scrolls, the stack segments and load bars breathe. */
+@keyframes tm-wave { to { translate: -50% 0; } }
+@keyframes tm-breathe { from { scale: 0.7 1; } to { scale: 1.2 1; } }
+@keyframes tm-cpu { from { height: 2em; } to { height: 3.4em; } }
+@keyframes tm-ram { from { height: 3.8em; } to { height: 4.8em; } }
+@keyframes tm-gpu { from { height: 1.6em; } to { height: 2.8em; } }
+.tm-wave { animation: tm-wave 6s linear infinite; }
+.tm-stat { transform-origin: left; animation: tm-breathe 2.2s ease-in-out infinite alternate; }
+.tm-seg-cpu { height: 2.6em; animation: tm-cpu 1.9s ease-in-out infinite alternate; }
+.tm-seg-ram { height: 4.2em; animation: tm-ram 3.1s ease-in-out infinite alternate; }
+.tm-seg-gpu { height: 2.2em; animation: tm-gpu 2.5s ease-in-out -1s infinite alternate; }
 
 /* Quaestio: a card is picked up and moved across the board. */
 @keyframes quaestio-card {
@@ -256,18 +260,18 @@ body {
 @keyframes ck-before { 0%, 55.9% { opacity: 1; } 56%, 95.9% { opacity: 0; } 96%, 100% { opacity: 1; } }
 @keyframes ck-after { 0%, 55.9% { opacity: 0; } 56%, 95.9% { opacity: 1; } 96%, 100% { opacity: 0; } }
 @keyframes ck-tap {
-  0%, 9% { left: 21.8em; top: 51.5em; opacity: 0; scale: 0.6; }
-  10.5%, 12.5% { left: 21.8em; top: 51.5em; opacity: 1; scale: 1; }
-  14% { left: 21.8em; top: 51.5em; opacity: 0; scale: 0.6; }
-  14.5%, 23% { left: 3.84em; top: 39.71em; opacity: 0; scale: 0.6; }
-  24.5%, 26% { left: 3.84em; top: 39.71em; opacity: 1; scale: 1; }
-  27.5% { left: 3.84em; top: 39.71em; opacity: 0; scale: 0.6; }
-  28%, 30% { left: 9.61em; top: 39.71em; opacity: 0; scale: 0.6; }
-  31.5%, 33% { left: 9.61em; top: 39.71em; opacity: 1; scale: 1; }
-  34.5% { left: 9.61em; top: 39.71em; opacity: 0; scale: 0.6; }
-  35%, 41% { left: 12.5em; top: 51.52em; opacity: 0; scale: 0.6; }
-  42.5%, 44.5% { left: 12.5em; top: 51.52em; opacity: 1; scale: 1; }
-  46%, 100% { left: 21.8em; top: 51.5em; opacity: 0; scale: 0.6; }
+  0%, 9% { left: 14.37em; top: 27.6em; opacity: 0; scale: 0.6; }
+  10.5%, 12.5% { left: 14.37em; top: 27.6em; opacity: 1; scale: 1; }
+  14% { left: 14.37em; top: 27.6em; opacity: 0; scale: 0.6; }
+  14.5%, 23% { left: 3.31em; top: 19.15em; opacity: 0; scale: 0.6; }
+  24.5%, 26% { left: 3.31em; top: 19.15em; opacity: 1; scale: 1; }
+  27.5% { left: 3.31em; top: 19.15em; opacity: 0; scale: 0.6; }
+  28%, 30% { left: 8.33em; top: 19.15em; opacity: 0; scale: 0.6; }
+  31.5%, 33% { left: 8.33em; top: 19.15em; opacity: 1; scale: 1; }
+  34.5% { left: 8.33em; top: 19.15em; opacity: 0; scale: 0.6; }
+  35%, 41% { left: 8.33em; top: 27.55em; opacity: 0; scale: 0.6; }
+  42.5%, 44.5% { left: 8.33em; top: 27.55em; opacity: 1; scale: 1; }
+  46%, 100% { left: 14.37em; top: 27.6em; opacity: 0; scale: 0.6; }
 }
 .ck-screen { animation: ck-screen 9s ease-in-out infinite; }
 .ck-fab { animation: ck-fab 9s ease-in-out infinite; }
@@ -281,15 +285,15 @@ body {
 .ck-row-added { max-height: 0; opacity: 0; animation: ck-row-added 9s ease-in-out infinite; }
 .ck-before { animation: ck-before 9s infinite; }
 .ck-after { opacity: 0; animation: ck-after 9s infinite; }
-.ck-tap { left: 21.8em; top: 51.5em; translate: -50% -50%; opacity: 0; animation: ck-tap 9s ease-in-out infinite; }
+.ck-tap { left: 14.37em; top: 27.6em; translate: -50% -50%; opacity: 0; animation: ck-tap 9s ease-in-out infinite; }
 
 /* ToDo Stack: the top card is swiped away and joins the back of the stack. */
 @keyframes todo-card {
   0%, 22% { translate: 0 0; scale: 1; rotate: 0deg; opacity: 1; z-index: 3; }
-  31% { translate: 130% -4px; rotate: 16deg; opacity: 0; z-index: 4; }
-  34% { translate: 0 -26px; scale: 0.86; rotate: 0deg; opacity: 0; z-index: 1; }
-  42%, 58% { translate: 0 -26px; scale: 0.86; opacity: 1; z-index: 1; }
-  66%, 89% { translate: 0 -13px; scale: 0.93; opacity: 1; z-index: 2; }
+  31% { translate: 130% -0.2em; rotate: 16deg; opacity: 0; z-index: 4; }
+  34% { translate: 0 -1.2em; scale: 0.86; rotate: 0deg; opacity: 0; z-index: 1; }
+  42%, 58% { translate: 0 -1.2em; scale: 0.86; opacity: 1; z-index: 1; }
+  66%, 89% { translate: 0 -0.6em; scale: 0.93; opacity: 1; z-index: 2; }
   100% { translate: 0 0; scale: 1; opacity: 1; z-index: 3; }
 }
 .mock-todo-card { transform-origin: top center; animation: todo-card 6s ease-in-out infinite; }
